@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Laurie Platt, Performance &amp; Intelligence, Sheffield City Council">
+<meta name="author" content="Laurie Platt, Performance &amp; Intelligence, SCC">
 <meta name="dcterms.date" content="2022-12-31">
 
 <title>IMD Ward Level Summaries for Sheffield</title>
@@ -111,7 +111,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul class="collapse">
   <li><a href="#table" id="toc-table" class="nav-link" data-scroll-target="#table"> <span class="header-section-number">3.1</span> Table</a></li>
   <li><a href="#map" id="toc-map" class="nav-link" data-scroll-target="#map"> <span class="header-section-number">3.2</span> Map</a></li>
-  <li><a href="#export-spreadsheet" id="toc-export-spreadsheet" class="nav-link" data-scroll-target="#export-spreadsheet"> <span class="header-section-number">3.3</span> Export spreadsheet</a></li>
+  <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export"> <span class="header-section-number">3.3</span> Export</a>
+  <ul class="collapse">
+  <li><a href="#spreadsheet" id="toc-spreadsheet" class="nav-link" data-scroll-target="#spreadsheet"> <span class="header-section-number">3.3.1</span> Spreadsheet</a></li>
+  <li><a href="#rds-file" id="toc-rds-file" class="nav-link" data-scroll-target="#rds-file"> <span class="header-section-number">3.3.2</span> RDS file</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#further-development" id="toc-further-development" class="nav-link" data-scroll-target="#further-development"> <span class="header-section-number">4</span> Further development</a></li>
   </ul>
@@ -135,7 +139,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Laurie Platt, Performance &amp; Intelligence, Sheffield City Council </p>
+             <p>Laurie Platt, Performance &amp; Intelligence, SCC </p>
           </div>
   </div>
     
@@ -211,53 +215,52 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>lsoa_pop, <span class="sc">-</span><span class="fu">contains</span>(<span class="st">"resi"</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">ward_name =</span> wd20nm)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Add IMD rank</span></span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>imd_lsoa <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(</span>
-<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx"</span>, </span>
-<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">sheet =</span> <span class="st">"IMD2019"</span></span>
-<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(local_authority_district_name_2019 <span class="sc">==</span> <span class="st">"Sheffield"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">lsoa_code =</span> lsoa_code_2011,</span>
-<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">imd_rank =</span> index_of_multiple_deprivation_imd_rank</span>
-<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(pop_lsoa, <span class="at">by =</span> <span class="st">"lsoa_code"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(imd_rank, <span class="at">.after =</span> <span class="fu">last_col</span>()) <span class="sc">|&gt;</span> </span>
-<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">imd_rank_pop_multiple =</span> population <span class="sc">*</span> imd_rank)</span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum multiplied figures by ward</span></span>
-<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>imd_ward <span class="ot">&lt;-</span> imd_lsoa <span class="sc">|&gt;</span>   </span>
-<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count</span>(ward_name, <span class="at">wt =</span> population, <span class="at">name =</span> <span class="st">"ward_pop"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(</span>
-<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    ward_name, </span>
-<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    ward_pop, </span>
-<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">wt =</span> imd_rank_pop_multiple, </span>
-<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"imd_rank_pop_multiple"</span></span>
-<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">imd_avg_rank =</span> <span class="fu">round</span>(imd_rank_pop_multiple <span class="sc">/</span> ward_pop, <span class="dv">1</span>), </span>
-<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">"unused"</span></span>
-<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sheff_imd_rank =</span> <span class="fu">dense_rank</span>(imd_avg_rank)) <span class="sc">|&gt;</span> </span>
-<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(sheff_imd_rank)</span>
-<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Display table</span></span>
-<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>imd_ward <span class="sc">|&gt;</span> </span>
-<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-70"><a href="#cb1-70" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_538</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Add IMD rank</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>imd_lsoa <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx"</span>, </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">sheet =</span> <span class="st">"IMD2019"</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(local_authority_district_name_2019 <span class="sc">==</span> <span class="st">"Sheffield"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">lsoa_code =</span> lsoa_code_2011,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">imd_rank =</span> index_of_multiple_deprivation_imd_rank</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(pop_lsoa, <span class="at">by =</span> <span class="st">"lsoa_code"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(imd_rank, <span class="at">.after =</span> <span class="fu">last_col</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">imd_rank_pop_multiple =</span> population <span class="sc">*</span> imd_rank)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum multiplied figures by ward</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>imd_ward <span class="ot">&lt;-</span> imd_lsoa <span class="sc">|&gt;</span>   </span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count</span>(ward_name, <span class="at">wt =</span> population, <span class="at">name =</span> <span class="st">"ward_pop"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    ward_name, </span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    ward_pop, </span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">wt =</span> imd_rank_pop_multiple, </span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"imd_rank_pop_multiple"</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">imd_avg_rank =</span> <span class="fu">round</span>(imd_rank_pop_multiple <span class="sc">/</span> ward_pop, <span class="dv">1</span>), </span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">"unused"</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sheff_imd_rank =</span> <span class="fu">dense_rank</span>(imd_avg_rank)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(sheff_imd_rank)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Display table</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>imd_ward <span class="sc">|&gt;</span> </span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_538</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 
-<div id="ddyygxpygz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<div id="flnhgtmsms" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>@import url("https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 html {
   font-family: Chivo, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
 }
 
-#ddyygxpygz .gt_table {
+#flnhgtmsms .gt_table {
   display: table;
   border-collapse: collapse;
   margin-left: auto;
@@ -282,7 +285,7 @@ html {
   border-left-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_heading {
+#flnhgtmsms .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -294,7 +297,7 @@ html {
   border-right-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_title {
+#flnhgtmsms .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -306,7 +309,7 @@ html {
   border-bottom-width: 0;
 }
 
-#ddyygxpygz .gt_subtitle {
+#flnhgtmsms .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -318,13 +321,13 @@ html {
   border-top-width: 0;
 }
 
-#ddyygxpygz .gt_bottom_border {
+#flnhgtmsms .gt_bottom_border {
   border-bottom-style: none;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_col_headings {
+#flnhgtmsms .gt_col_headings {
   border-top-style: none;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -339,7 +342,7 @@ html {
   border-right-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_col_heading {
+#flnhgtmsms .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -359,7 +362,7 @@ html {
   overflow-x: hidden;
 }
 
-#ddyygxpygz .gt_column_spanner_outer {
+#flnhgtmsms .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -371,15 +374,15 @@ html {
   padding-right: 4px;
 }
 
-#ddyygxpygz .gt_column_spanner_outer:first-child {
+#flnhgtmsms .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#ddyygxpygz .gt_column_spanner_outer:last-child {
+#flnhgtmsms .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#ddyygxpygz .gt_column_spanner {
+#flnhgtmsms .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #000000;
@@ -391,7 +394,7 @@ html {
   width: 100%;
 }
 
-#ddyygxpygz .gt_group_heading {
+#flnhgtmsms .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -416,7 +419,7 @@ html {
   vertical-align: middle;
 }
 
-#ddyygxpygz .gt_empty_group_heading {
+#flnhgtmsms .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -431,15 +434,15 @@ html {
   vertical-align: middle;
 }
 
-#ddyygxpygz .gt_from_md > :first-child {
+#flnhgtmsms .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#ddyygxpygz .gt_from_md > :last-child {
+#flnhgtmsms .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#ddyygxpygz .gt_row {
+#flnhgtmsms .gt_row {
   padding-top: 3px;
   padding-bottom: 3px;
   padding-left: 5px;
@@ -458,7 +461,7 @@ html {
   overflow-x: hidden;
 }
 
-#ddyygxpygz .gt_stub {
+#flnhgtmsms .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 80%;
@@ -471,7 +474,7 @@ html {
   padding-right: 5px;
 }
 
-#ddyygxpygz .gt_stub_row_group {
+#flnhgtmsms .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -485,11 +488,11 @@ html {
   vertical-align: top;
 }
 
-#ddyygxpygz .gt_row_group_first td {
+#flnhgtmsms .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#ddyygxpygz .gt_summary_row {
+#flnhgtmsms .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -499,16 +502,16 @@ html {
   padding-right: 5px;
 }
 
-#ddyygxpygz .gt_first_summary_row {
+#flnhgtmsms .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_first_summary_row.thick {
+#flnhgtmsms .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#ddyygxpygz .gt_last_summary_row {
+#flnhgtmsms .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -518,7 +521,7 @@ html {
   border-bottom-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_grand_summary_row {
+#flnhgtmsms .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -528,7 +531,7 @@ html {
   padding-right: 5px;
 }
 
-#ddyygxpygz .gt_first_grand_summary_row {
+#flnhgtmsms .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -538,11 +541,11 @@ html {
   border-top-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_striped {
+#flnhgtmsms .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#ddyygxpygz .gt_table_body {
+#flnhgtmsms .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -551,7 +554,7 @@ html {
   border-bottom-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_footnotes {
+#flnhgtmsms .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -565,7 +568,7 @@ html {
   border-right-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_footnote {
+#flnhgtmsms .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-left: 4px;
@@ -574,7 +577,7 @@ html {
   padding-right: 5px;
 }
 
-#ddyygxpygz .gt_sourcenotes {
+#flnhgtmsms .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -588,7 +591,7 @@ html {
   border-right-color: #D3D3D3;
 }
 
-#ddyygxpygz .gt_sourcenote {
+#flnhgtmsms .gt_sourcenote {
   font-size: 12px;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -596,64 +599,64 @@ html {
   padding-right: 5px;
 }
 
-#ddyygxpygz .gt_left {
+#flnhgtmsms .gt_left {
   text-align: left;
 }
 
-#ddyygxpygz .gt_center {
+#flnhgtmsms .gt_center {
   text-align: center;
 }
 
-#ddyygxpygz .gt_right {
+#flnhgtmsms .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#ddyygxpygz .gt_font_normal {
+#flnhgtmsms .gt_font_normal {
   font-weight: normal;
 }
 
-#ddyygxpygz .gt_font_bold {
+#flnhgtmsms .gt_font_bold {
   font-weight: bold;
 }
 
-#ddyygxpygz .gt_font_italic {
+#flnhgtmsms .gt_font_italic {
   font-style: italic;
 }
 
-#ddyygxpygz .gt_super {
+#flnhgtmsms .gt_super {
   font-size: 65%;
 }
 
-#ddyygxpygz .gt_footnote_marks {
+#flnhgtmsms .gt_footnote_marks {
   font-style: italic;
   font-weight: normal;
   font-size: 75%;
   vertical-align: 0.4em;
 }
 
-#ddyygxpygz .gt_asterisk {
+#flnhgtmsms .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#ddyygxpygz .gt_indent_1 {
+#flnhgtmsms .gt_indent_1 {
   text-indent: 5px;
 }
 
-#ddyygxpygz .gt_indent_2 {
+#flnhgtmsms .gt_indent_2 {
   text-indent: 10px;
 }
 
-#ddyygxpygz .gt_indent_3 {
+#flnhgtmsms .gt_indent_3 {
   text-indent: 15px;
 }
 
-#ddyygxpygz .gt_indent_4 {
+#flnhgtmsms .gt_indent_4 {
   text-indent: 20px;
 }
 
-#ddyygxpygz .gt_indent_5 {
+#flnhgtmsms .gt_indent_5 {
   text-indent: 25px;
 }
 
@@ -806,8 +809,10 @@ tbody tr:last-child {
 </div>
 </div>
 </section>
-<section id="export-spreadsheet" class="level3" data-number="3.3">
-<h3 data-number="3.3" class="anchored" data-anchor-id="export-spreadsheet"><span class="header-section-number">3.3</span> Export spreadsheet</h3>
+<section id="export" class="level3" data-number="3.3">
+<h3 data-number="3.3" class="anchored" data-anchor-id="export"><span class="header-section-number">3.3</span> Export</h3>
+<section id="spreadsheet" class="level4" data-number="3.3.1">
+<h4 data-number="3.3.1" class="anchored" data-anchor-id="spreadsheet"><span class="header-section-number">3.3.1</span> Spreadsheet</h4>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -815,6 +820,17 @@ tbody tr:last-child {
 </details>
 </div>
 <p><a href="https://scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx">scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx</a></p>
+</section>
+<section id="rds-file" class="level4" data-number="3.3.2">
+<h4 data-number="3.3.2" class="anchored" data-anchor-id="rds-file"><span class="header-section-number">3.3.2</span> RDS file</h4>
+<p>For use with R.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(imd_ward, <span class="st">"imd-ward-sheff.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
 </section>
 </section>
 <section id="further-development" class="level2" data-number="4">

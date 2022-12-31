@@ -1,7 +1,7 @@
 ---
 title: "IMD Ward Level Summaries for Sheffield"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-author: "Laurie Platt, Performance & Intelligence, Sheffield City Council"
+author: "Laurie Platt, Performance & Intelligence, SCC"
 format: 
   html:
     css: "resources/style.css"
@@ -103,7 +103,6 @@ pop_lsoa <- pop_lsoa_age_band |>
   clean_names() |> 
   select(-lsoa_pop, -contains("resi")) |> 
   rename(ward_name = wd20nm)
-  
 
 # Add IMD rank
 imd_lsoa <- read_xlsx(
@@ -182,7 +181,9 @@ sf_ward |>
     )
 ```
 
-### Export spreadsheet
+### Export 
+
+#### Spreadsheet
 
 ```{r}
 #| label: ward-imd-xlsx
@@ -192,6 +193,17 @@ write_xlsx(imd_ward, "imd-ward-sheff.xlsx")
 ```
 
 [scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx](https://scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx)
+
+#### RDS file
+
+For use with R.
+
+```{r}
+#| label: ward-imd-rds
+#| warning: false
+
+saveRDS(imd_ward, "imd-ward-sheff.rds")
+```
 
 ## Further development  
 
