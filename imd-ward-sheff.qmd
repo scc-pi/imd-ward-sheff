@@ -32,6 +32,7 @@ library(viridis)
 library(readxl)
 library(janitor)
 library(ggrepel)
+library(writexl)
 
 # Disable scientific notation
 options(scipen=999) 
@@ -130,11 +131,11 @@ imd_ward <- imd_lsoa |>
     imd_avg_rank = round(imd_rank_pop_multiple / ward_pop, 1), 
     .keep = "unused"
   ) |> 
-  mutate(sheff_imd_rank = dense_rank(imd_avg_rank))
+  mutate(sheff_imd_rank = dense_rank(imd_avg_rank)) |> 
+  arrange(sheff_imd_rank)
 
 # Display table
 imd_ward |> 
-  arrange(sheff_imd_rank) |> 
   gt() |> 
   gt_theme_538()
 ```
@@ -177,6 +178,15 @@ sf_ward |>
       bg.r = 0.15,
       aes(LONG, LAT, label = WD20NM)
     )
+```
+
+### Export spreadsheet
+
+```{r}
+#| label: ward-imd-xlsx
+#| warning: false
+
+write_xlsx(imd_ward, "imd-ward-sheff.xlsx")
 ```
 
 ## Further development  
