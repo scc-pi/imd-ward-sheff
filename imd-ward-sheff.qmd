@@ -15,6 +15,8 @@ format:
       collapsed: false
 ---
 
+[View source](https://github.com/scc-pi/imd-ward-sheff/blob/main/imd-ward-sheff.qmd) ![](resources/octocat.png){width="24"}
+
 ```{r}
 #| label: setup
 #| include: false
