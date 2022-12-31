@@ -62,9 +62,7 @@ Residential properties were extracted from the Sheffield LLPG (Local Land Proper
 
 NB: IMD data is 2019. Population and boundaries data are 2020. Residential property data is 2022.
 
-##  Average of LSOA Ranks
-
-### Table  
+## Average of LSOA Ranks
 
 ```{r}
 #| label: ward-imd
@@ -141,7 +139,7 @@ imd_ward |>
   gt_theme_538()
 ```
 
-### Map
+## Map
 
 ```{r}
 #| label: ward-imd-map
@@ -181,9 +179,9 @@ sf_ward |>
     )
 ```
 
-### Export 
+## Export 
 
-#### Spreadsheet
+### Spreadsheet
 
 ```{r}
 #| label: ward-imd-xlsx
@@ -194,7 +192,7 @@ write_xlsx(imd_ward, "imd-ward-sheff.xlsx")
 
 [scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx](https://scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx)
 
-#### RDS file
+### RDS file
 
 For use with R.
 
