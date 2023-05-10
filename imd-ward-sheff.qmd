@@ -5,7 +5,7 @@ author: "Laurie Platt, Performance & Intelligence, SCC"
 format: 
   html:
     css: "resources/style.css"
-    code-fold: true
+    code-fold: show
     theme: paper
     toc: true
     toc-depth: 4
