@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-0.9.409">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Laurie Platt, Performance &amp; Intelligence, SCC">
+<meta name="dcterms.date" content="2023-05-10">
+
+<title>IMD Ward Level Summaries for Sheffield</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<script src="imd-ward-sheff_files/libs/clipboard/clipboard.min.js"></script>
+<script src="imd-ward-sheff_files/libs/quarto-html/quarto.js"></script>
+<script src="imd-ward-sheff_files/libs/quarto-html/popper.min.js"></script>
+<script src="imd-ward-sheff_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="imd-ward-sheff_files/libs/quarto-html/anchor.min.js"></script>
+<link href="imd-ward-sheff_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link id="quarto-text-highlighting-styles" href="imd-ward-sheff_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+<script src="imd-ward-sheff_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="imd-ward-sheff_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="imd-ward-sheff_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="resources/style.css">
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#method" id="toc-method" class="nav-link active" data-scroll-target="#method"> <span class="header-section-number">1</span> Method</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"> <span class="header-section-number">2</span> Data</a></li>
+  <li><a href="#average-of-lsoa-ranks" id="toc-average-of-lsoa-ranks" class="nav-link" data-scroll-target="#average-of-lsoa-ranks"> <span class="header-section-number">3</span> Average of LSOA Ranks</a></li>
+  <li><a href="#map" id="toc-map" class="nav-link" data-scroll-target="#map"> <span class="header-section-number">4</span> Map</a></li>
+  <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export"> <span class="header-section-number">5</span> Export</a>
+  <ul class="collapse">
+  <li><a href="#spreadsheet" id="toc-spreadsheet" class="nav-link" data-scroll-target="#spreadsheet"> <span class="header-section-number">5.1</span> Spreadsheet</a></li>
+  <li><a href="#rds-file" id="toc-rds-file" class="nav-link" data-scroll-target="#rds-file"> <span class="header-section-number">5.2</span> RDS file</a></li>
+  </ul></li>
+  <li><a href="#further-development" id="toc-further-development" class="nav-link" data-scroll-target="#further-development"> <span class="header-section-number">6</span> Further development</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">IMD Ward Level Summaries for Sheffield</h1>
+</div>
+
+
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Laurie Platt, Performance &amp; Intelligence, SCC </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 10, 2023</p>
+    </div>
+  </div>
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://github.com/scc-pi/imd-ward-sheff/blob/main/imd-ward-sheff.qmd">View source</a> <img src="resources/octocat.png" class="img-fluid" width="24"></p>
+<section id="method" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="method"><span class="header-section-number">1</span> Method</h2>
+<p>IMD (Indices of Multiple Deprivation) statistics are produced at the LSOA (Lower Super Output Area) level. Sheffield has 345 LSOAs and 28 wards.</p>
+<p>To produce ward level summary measures for Sheffield from 2019 IMD we’ve followed the methodology set out in the ward level summaries document on the <a href="https://data.london.gov.uk/dataset/indices-of-deprivation">London Datastore Indices of Deprivation</a> web page (which in turn is derived from the ONS Local Authority level IMD summaries):</p>
+<blockquote class="blockquote">
+<p>“The Average of LSOA Scores measure describes the ward as a whole and is a population weighted average for the ward. This is calculated by first multiplying the IMD score for each LSOA by the population estimate for that LSOA. Where an LSOA is split between wards, a proportion of the population equivalent to the proportion of the LSOA’s addresses falling within that ward is multiplied by the IMD score for that LSOA. These figures are then summed across all LSOAs and part LSOAs within the ward and the result is divided by the total population for that ward (the sum of the LSOA population estimates). This measure takes into account the full range of scores within the ward and the number of people affected by the level of deprivation in each LSOA.”</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>“The Average of LSOA Ranks measure again takes into account the full range of deprivation across each ward but using the ranks of LSOAs rather than the scores.”</p>
+</blockquote>
+</section>
+<section id="data" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="data"><span class="header-section-number">2</span> Data</h2>
+<p>IMD data downloaded from MHCLG at:<br>
+<a href="https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019">www.gov.uk/government/statistics/english-indices-of-deprivation-2019</a></p>
+<p>Population and boundary data for Sheffield is via the <a href="https://github.com/scc-pi/popsheff#readme">popsheff</a> and <a href="https://github.com/scc-pi/boundsheff#readme">boundsheff</a> R packages.</p>
+<p>Residential properties were extracted from the Sheffield LLPG (Local Land Property Gazetteer) on Portal via ArcGIS Pro.</p>
+<p>NB: IMD data is 2019. Population and boundaries data are 2020. Residential property data is 2022.</p>
+</section>
+<section id="average-of-lsoa-ranks" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="average-of-lsoa-ranks"><span class="header-section-number">3</span> Average of LSOA Ranks</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read residential points</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sf_resi <span class="ot">&lt;-</span> <span class="fu">st_read</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">dsn =</span> <span class="st">"data/Residential.gdb"</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">layer =</span> <span class="st">"ResiAddress"</span>, </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">quiet =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_cast</span>(<span class="st">"POINT"</span>) <span class="sc">|&gt;</span> <span class="co"># cast from multi-point to point</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="at">crs =</span> <span class="dv">4326</span>) <span class="co"># WSG84 coordinates</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add ward &amp; LSOA variables to residential points</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>sf_resi <span class="ot">&lt;-</span> sf_resi <span class="sc">|&gt;</span> </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(sf_ward, <span class="at">join =</span> st_within) <span class="sc">|&gt;</span> </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(WD20NM)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_join</span>(sf_lsoa, <span class="at">join =</span> st_within) <span class="sc">|&gt;</span> </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(LSOA11NM))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Proportion of residences by LSOA &amp; ward</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>resi <span class="ot">&lt;-</span> sf_resi <span class="sc">|&gt;</span> </span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_drop_geometry</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(LSOA11NM, WD20NM, <span class="at">name =</span> <span class="st">"resi"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count</span>(LSOA11NM, <span class="at">wt =</span> resi, <span class="at">name  =</span><span class="st">"lsoa_resi"</span> ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">resi_prop =</span> resi <span class="sc">/</span> lsoa_resi)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Population by LSOA &amp; ward</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>pop_lsoa <span class="ot">&lt;-</span> pop_lsoa_age_band <span class="sc">|&gt;</span> </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="st">`</span><span class="at">Age band</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"All Ages"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span><span class="st">`</span><span class="at">Age band</span><span class="st">`</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">lsoa_pop =</span> Population) <span class="sc">|&gt;</span> </span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(resi, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"LSOA Name"</span> <span class="ot">=</span> <span class="st">"LSOA11NM"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">population =</span> <span class="fu">round</span>(resi_prop <span class="sc">*</span> lsoa_pop)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>lsoa_pop, <span class="sc">-</span><span class="fu">contains</span>(<span class="st">"resi"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">ward_name =</span> wd20nm)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Add IMD rank</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>imd_lsoa <span class="ot">&lt;-</span> <span class="fu">read_xlsx</span>(</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"data/File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx"</span>, </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="at">sheet =</span> <span class="st">"IMD2019"</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(local_authority_district_name_2019 <span class="sc">==</span> <span class="st">"Sheffield"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">lsoa_code =</span> lsoa_code_2011,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">imd_rank =</span> index_of_multiple_deprivation_imd_rank</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">right_join</span>(pop_lsoa, <span class="at">by =</span> <span class="st">"lsoa_code"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">relocate</span>(imd_rank, <span class="at">.after =</span> <span class="fu">last_col</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">imd_rank_pop_multiple =</span> population <span class="sc">*</span> imd_rank)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum multiplied figures by ward</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>imd_ward <span class="ot">&lt;-</span> imd_lsoa <span class="sc">|&gt;</span>   </span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_count</span>(ward_name, <span class="at">wt =</span> population, <span class="at">name =</span> <span class="st">"ward_pop"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    ward_name, </span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>    ward_pop, </span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>    <span class="at">wt =</span> imd_rank_pop_multiple, </span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="st">"imd_rank_pop_multiple"</span></span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>    <span class="at">imd_avg_rank =</span> <span class="fu">round</span>(imd_rank_pop_multiple <span class="sc">/</span> ward_pop, <span class="dv">1</span>), </span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">.keep =</span> <span class="st">"unused"</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-63"><a href="#cb1-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sheff_imd_rank =</span> <span class="fu">dense_rank</span>(imd_avg_rank)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-64"><a href="#cb1-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(sheff_imd_rank)</span>
+<span id="cb1-65"><a href="#cb1-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-66"><a href="#cb1-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Display table</span></span>
+<span id="cb1-67"><a href="#cb1-67" aria-hidden="true" tabindex="-1"></a>imd_ward <span class="sc">|&gt;</span> </span>
+<span id="cb1-68"><a href="#cb1-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb1-69"><a href="#cb1-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt_theme_538</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<div id="lhdsvvhxhh" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Chivo:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: Chivo, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#lhdsvvhxhh .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: 300;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 3px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#lhdsvvhxhh .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#lhdsvvhxhh .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: normal;
+  text-transform: uppercase;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#lhdsvvhxhh .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#lhdsvvhxhh .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#lhdsvvhxhh .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#lhdsvvhxhh .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #000000;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#lhdsvvhxhh .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #000000;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#lhdsvvhxhh .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #000000;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-bottom-color: #FFFFFF;
+  vertical-align: middle;
+}
+
+#lhdsvvhxhh .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#lhdsvvhxhh .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#lhdsvvhxhh .gt_row {
+  padding-top: 3px;
+  padding-bottom: 3px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#lhdsvvhxhh .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 80%;
+  font-weight: bolder;
+  text-transform: uppercase;
+  border-right-style: solid;
+  border-right-width: 0px;
+  border-right-color: #FFFFFF;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lhdsvvhxhh .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#lhdsvvhxhh .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#lhdsvvhxhh .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lhdsvvhxhh .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#lhdsvvhxhh .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lhdsvvhxhh .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#lhdsvvhxhh .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lhdsvvhxhh .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#lhdsvvhxhh .gt_sourcenote {
+  font-size: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#lhdsvvhxhh .gt_left {
+  text-align: left;
+}
+
+#lhdsvvhxhh .gt_center {
+  text-align: center;
+}
+
+#lhdsvvhxhh .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#lhdsvvhxhh .gt_font_normal {
+  font-weight: normal;
+}
+
+#lhdsvvhxhh .gt_font_bold {
+  font-weight: bold;
+}
+
+#lhdsvvhxhh .gt_font_italic {
+  font-style: italic;
+}
+
+#lhdsvvhxhh .gt_super {
+  font-size: 65%;
+}
+
+#lhdsvvhxhh .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+#lhdsvvhxhh .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#lhdsvvhxhh .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#lhdsvvhxhh .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#lhdsvvhxhh .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#lhdsvvhxhh .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#lhdsvvhxhh .gt_indent_5 {
+  text-indent: 25px;
+}
+
+tbody tr:last-child {
+  border-bottom: 2px solid #ffffff00;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col">ward_name</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col">imd_avg_rank</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" style="border-top-width: 0px; border-top-style: solid; border-top-color: black;" scope="col">sheff_imd_rank</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Burngreave</td>
+<td class="gt_row gt_right">2253.5</td>
+<td class="gt_row gt_right">1</td></tr>
+    <tr><td class="gt_row gt_left">Firth Park</td>
+<td class="gt_row gt_right">2349.2</td>
+<td class="gt_row gt_right">2</td></tr>
+    <tr><td class="gt_row gt_left">Southey</td>
+<td class="gt_row gt_right">3641.7</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_left">Manor Castle</td>
+<td class="gt_row gt_right">3940.1</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_left">Shiregreen and Brightside</td>
+<td class="gt_row gt_right">4886.9</td>
+<td class="gt_row gt_right">5</td></tr>
+    <tr><td class="gt_row gt_left">Darnall</td>
+<td class="gt_row gt_right">5084.8</td>
+<td class="gt_row gt_right">6</td></tr>
+    <tr><td class="gt_row gt_left">Park and Arbourthorne</td>
+<td class="gt_row gt_right">6040.9</td>
+<td class="gt_row gt_right">7</td></tr>
+    <tr><td class="gt_row gt_left">Gleadless Valley</td>
+<td class="gt_row gt_right">8345.5</td>
+<td class="gt_row gt_right">8</td></tr>
+    <tr><td class="gt_row gt_left">Richmond</td>
+<td class="gt_row gt_right">10028.8</td>
+<td class="gt_row gt_right">9</td></tr>
+    <tr><td class="gt_row gt_left">Woodhouse</td>
+<td class="gt_row gt_right">10513.3</td>
+<td class="gt_row gt_right">10</td></tr>
+    <tr><td class="gt_row gt_left">Beauchief and Greenhill</td>
+<td class="gt_row gt_right">12331.0</td>
+<td class="gt_row gt_right">11</td></tr>
+    <tr><td class="gt_row gt_left">City</td>
+<td class="gt_row gt_right">13285.7</td>
+<td class="gt_row gt_right">12</td></tr>
+    <tr><td class="gt_row gt_left">Birley</td>
+<td class="gt_row gt_right">13366.4</td>
+<td class="gt_row gt_right">13</td></tr>
+    <tr><td class="gt_row gt_left">Nether Edge and Sharrow</td>
+<td class="gt_row gt_right">13737.7</td>
+<td class="gt_row gt_right">14</td></tr>
+    <tr><td class="gt_row gt_left">Walkley</td>
+<td class="gt_row gt_right">14427.4</td>
+<td class="gt_row gt_right">15</td></tr>
+    <tr><td class="gt_row gt_left">Hillsborough</td>
+<td class="gt_row gt_right">15745.1</td>
+<td class="gt_row gt_right">16</td></tr>
+    <tr><td class="gt_row gt_left">East Ecclesfield</td>
+<td class="gt_row gt_right">16661.4</td>
+<td class="gt_row gt_right">17</td></tr>
+    <tr><td class="gt_row gt_left">Stocksbridge and Upper Don</td>
+<td class="gt_row gt_right">16813.6</td>
+<td class="gt_row gt_right">18</td></tr>
+    <tr><td class="gt_row gt_left">Mosborough</td>
+<td class="gt_row gt_right">16925.4</td>
+<td class="gt_row gt_right">19</td></tr>
+    <tr><td class="gt_row gt_left">Beighton</td>
+<td class="gt_row gt_right">16972.1</td>
+<td class="gt_row gt_right">20</td></tr>
+    <tr><td class="gt_row gt_left">West Ecclesfield</td>
+<td class="gt_row gt_right">18729.1</td>
+<td class="gt_row gt_right">21</td></tr>
+    <tr><td class="gt_row gt_left">Stannington</td>
+<td class="gt_row gt_right">20632.0</td>
+<td class="gt_row gt_right">22</td></tr>
+    <tr><td class="gt_row gt_left">Graves Park</td>
+<td class="gt_row gt_right">21100.6</td>
+<td class="gt_row gt_right">23</td></tr>
+    <tr><td class="gt_row gt_left">Broomhill and Sharrow Vale</td>
+<td class="gt_row gt_right">21934.8</td>
+<td class="gt_row gt_right">24</td></tr>
+    <tr><td class="gt_row gt_left">Dore and Totley</td>
+<td class="gt_row gt_right">27180.3</td>
+<td class="gt_row gt_right">25</td></tr>
+    <tr><td class="gt_row gt_left">Crookes and Crosspool</td>
+<td class="gt_row gt_right">28078.9</td>
+<td class="gt_row gt_right">26</td></tr>
+    <tr><td class="gt_row gt_left">Fulwood</td>
+<td class="gt_row gt_right">29822.9</td>
+<td class="gt_row gt_right">27</td></tr>
+    <tr><td class="gt_row gt_left">Ecclesall</td>
+<td class="gt_row gt_right">30618.1</td>
+<td class="gt_row gt_right">28</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="map" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="map"><span class="header-section-number">4</span> Map</h2>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display choropleth</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sf_ward <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">left_join</span>(imd_ward, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"WD20NM"</span> <span class="ot">=</span> <span class="st">"ward_name"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">fill =</span> sheff_imd_rank)) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_sf</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">colour =</span> <span class="st">'white'</span>, <span class="at">size =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_void</span>() <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_viridis</span>(</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">discrete =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> <span class="st">"Sheffield IMD Average Ward Rank"</span>,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">direction =</span> <span class="dv">1</span>,</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">guide =</span> <span class="fu">guide_colourbar</span>(</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">direction =</span> <span class="st">"horizontal"</span>,</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">barheight =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="at">units =</span> <span class="st">"mm"</span>),</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">barwidth =</span> <span class="fu">unit</span>(<span class="dv">50</span>, <span class="at">units =</span> <span class="st">"mm"</span>),</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">draw.ulim =</span> F,</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">title.position =</span> <span class="st">'top'</span>,</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>        <span class="at">title.hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>        <span class="at">label.hjust =</span> <span class="fl">0.5</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text_repel</span>(</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="fl">2.5</span>, </span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">force =</span> <span class="dv">1</span>, </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">bg.color =</span> <span class="st">"white"</span>, </span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">bg.r =</span> <span class="fl">0.15</span>,</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(LONG, LAT, <span class="at">label =</span> WD20NM)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="imd-ward-sheff_files/figure-html/ward-imd-map-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="export" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="export"><span class="header-section-number">5</span> Export</h2>
+<section id="spreadsheet" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="spreadsheet"><span class="header-section-number">5.1</span> Spreadsheet</h3>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write_xlsx</span>(imd_ward, <span class="st">"imd-ward-sheff.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><a href="https://scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx">scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx</a></p>
+</section>
+<section id="rds-file" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="rds-file"><span class="header-section-number">5.2</span> RDS file</h3>
+<p>For use with R.</p>
+<div class="cell">
+<details open="">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(imd_ward, <span class="st">"imd-ward-sheff.rds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><a href="https://scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.rds">scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.rds</a></p>
+</section>
+</section>
+<section id="further-development" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="further-development"><span class="header-section-number">6</span> Further development</h2>
+<p>Further development could include “Average of LSOA Scores” and other measures detailed in the <a href="https://data.london.gov.uk/dataset/indices-of-deprivation">ward level summary measures for London</a>.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
