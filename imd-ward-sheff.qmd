@@ -1,0 +1,211 @@
+---
+title: "IMD Ward Level Summaries for Sheffield"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Laurie Platt, Performance & Intelligence, SCC"
+format: 
+  html:
+    css: "resources/style.css"
+    code-fold: show
+    theme: paper
+    toc: true
+    toc-depth: 4
+    toc-location: left
+    number-sections: true
+    toc-float: 
+      collapsed: false
+---
+
+[View source](https://github.com/scc-pi/imd-ward-sheff/blob/main/imd-ward-sheff.qmd) ![](resources/octocat.png){width="24"}
+
+```{r}
+#| label: setup
+#| include: false
+
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+library(gt)
+library(gtExtras)
+library(scales)
+library(sf)
+library(boundsheff)
+library(popsheff)
+library(viridis)
+library(readxl)
+library(janitor)
+library(ggrepel)
+library(writexl)
+
+# Disable scientific notation
+options(scipen=999) 
+```
+
+## Method  
+
+IMD (Indices of Multiple Deprivation) statistics are produced at the LSOA (Lower Super Output Area) level. Sheffield has 345 LSOAs and 28 wards.
+
+To produce ward level summary measures for Sheffield from 2019 IMD we've followed the methodology set out in the ward level summaries document on the [London Datastore Indices of Deprivation](https://data.london.gov.uk/dataset/indices-of-deprivation) web page (which in turn is derived from the ONS Local Authority level IMD summaries): 
+
+> "The Average of LSOA Scores measure describes the ward as a whole and is a population weighted average for the ward. This is calculated by first multiplying the IMD score for each LSOA by the population estimate for that LSOA. Where an LSOA is split between wards, a proportion of the population equivalent to the proportion of the LSOA’s addresses falling within that ward is multiplied by the IMD score for that LSOA. These figures are then summed across all LSOAs and part LSOAs within the ward and the result is divided by 
+the total population for that ward (the sum of the LSOA population estimates). This measure takes into account the full range of scores within the ward and the number of people affected by the level of deprivation in each LSOA."
+
+> "The Average of LSOA Ranks measure again takes into account the full range of deprivation across each ward but using the ranks of LSOAs rather than the scores."
+
+## Data
+
+IMD data downloaded from MHCLG at:  
+[www.gov.uk/government/statistics/english-indices-of-deprivation-2019](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019)  
+
+Population and boundary data for Sheffield is via the [popsheff](https://github.com/scc-pi/popsheff#readme) and [boundsheff](https://github.com/scc-pi/boundsheff#readme) R packages.
+
+Residential properties were extracted from the Sheffield LLPG (Local Land Property Gazetteer) on Portal via ArcGIS Pro.
+
+NB: IMD data is 2019. Population and boundaries data are 2020. Residential property data is 2022.
+
+## Average of LSOA Ranks
+
+```{r}
+#| label: ward-imd
+#| warning: false
+
+# Read residential points
+sf_resi <- st_read(
+  dsn = "data/Residential.gdb", 
+  layer = "ResiAddress", 
+  quiet = TRUE
+) |> 
+  st_cast("POINT") |> # cast from multi-point to point
+  st_transform(crs = 4326) # WSG84 coordinates
+
+# Add ward & LSOA variables to residential points
+sf_resi <- sf_resi |> 
+  st_join(sf_ward, join = st_within) |> 
+  filter(!is.na(WD20NM)) |> 
+  st_join(sf_lsoa, join = st_within) |> 
+  filter(!is.na(LSOA11NM))
+
+# Proportion of residences by LSOA & ward
+resi <- sf_resi |> 
+  st_drop_geometry() |> 
+  count(LSOA11NM, WD20NM, name = "resi") |> 
+  add_count(LSOA11NM, wt = resi, name  ="lsoa_resi" ) |> 
+  mutate(resi_prop = resi / lsoa_resi)
+
+# Population by LSOA & ward
+pop_lsoa <- pop_lsoa_age_band |> 
+  filter(`Age band` == "All Ages") |> 
+  select(-`Age band`) |> 
+  rename(lsoa_pop = Population) |> 
+  right_join(resi, by = c("LSOA Name" = "LSOA11NM")) |> 
+  mutate(population = round(resi_prop * lsoa_pop)) |> 
+  clean_names() |> 
+  select(-lsoa_pop, -contains("resi")) |> 
+  rename(ward_name = wd20nm)
+
+# Add IMD rank
+imd_lsoa <- read_xlsx(
+  "data/File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx", 
+  sheet = "IMD2019"
+) |> 
+  clean_names() |> 
+  filter(local_authority_district_name_2019 == "Sheffield") |> 
+  select(
+    lsoa_code = lsoa_code_2011,
+    imd_rank = index_of_multiple_deprivation_imd_rank
+  ) |> 
+  right_join(pop_lsoa, by = "lsoa_code") |> 
+  relocate(imd_rank, .after = last_col()) |> 
+  mutate(imd_rank_pop_multiple = population * imd_rank)
+
+# Sum multiplied figures by ward
+imd_ward <- imd_lsoa |>   
+  add_count(ward_name, wt = population, name = "ward_pop") |> 
+  count(
+    ward_name, 
+    ward_pop, 
+    wt = imd_rank_pop_multiple, 
+    name = "imd_rank_pop_multiple"
+  ) |> 
+  mutate(
+    imd_avg_rank = round(imd_rank_pop_multiple / ward_pop, 1), 
+    .keep = "unused"
+  ) |> 
+  mutate(sheff_imd_rank = dense_rank(imd_avg_rank)) |> 
+  arrange(sheff_imd_rank)
+
+# Display table
+imd_ward |> 
+  gt() |> 
+  gt_theme_538()
+```
+
+## Map
+
+```{r}
+#| label: ward-imd-map
+#| warning: false
+
+# Display choropleth
+sf_ward |> 
+  left_join(imd_ward, by = c("WD20NM" = "ward_name")) |> 
+  ggplot(aes(fill = sheff_imd_rank)) +
+    geom_sf(alpha = 0.8, colour = 'white', size = 0.3) +
+    theme_void() +
+    theme(
+      legend.position = "top",
+      legend.title = element_text(size = 9),
+      legend.text = element_text(size = 8)
+    ) +
+    scale_fill_viridis(
+      discrete = FALSE,
+      name = "Sheffield IMD Average Ward Rank",
+      direction = 1,
+      guide = guide_colourbar(
+        direction = "horizontal",
+        barheight = unit(2, units = "mm"),
+        barwidth = unit(50, units = "mm"),
+        draw.ulim = F,
+        title.position = 'top',
+        title.hjust = 0.5,
+        label.hjust = 0.5
+      )
+    ) +
+    geom_text_repel(
+      size = 2.5, 
+      force = 1, 
+      bg.color = "white", 
+      bg.r = 0.15,
+      aes(LONG, LAT, label = WD20NM)
+    )
+```
+
+## Export 
+
+### Spreadsheet
+
+```{r}
+#| label: ward-imd-xlsx
+#| warning: false
+
+write_xlsx(imd_ward, "imd-ward-sheff.xlsx")
+```
+
+[scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx](https://scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.xlsx)
+
+### RDS file
+
+For use with R.
+
+```{r}
+#| label: ward-imd-rds
+#| warning: false
+
+saveRDS(imd_ward, "imd-ward-sheff.rds")
+```
+
+[scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.rds](https://scc-pi.github.io/imd-ward-sheff/imd-ward-sheff.rds)
+
+## Further development  
+
+Further development could include "Average of LSOA Scores" and other measures detailed in the [ward level summary measures for London](https://data.london.gov.uk/dataset/indices-of-deprivation).
+
